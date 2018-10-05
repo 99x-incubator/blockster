@@ -1,14 +1,26 @@
 {
-  "name": "aws-rest-with-dynamodb",
+  "name": "blockster",
   "version": "1.0.0",
   "description": "Serverless CRUD service exposing a REST HTTP interface",
   "author": "",
   "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-eslint": "^8.2.3",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "aws-sdk": "^2.328.0",
+    "serverless-dynamodb-local": "^0.2.35",
+    "serverless-offline": "^3.27.0",
+    "serverless-webpack": "^5.2.0",
+    "webpack": "^4.20.2"
+  },
   "dependencies": {
     "serverless-dynamodb-local": "^0.2.35",
     "uuid": "^2.0.3"
-  },
-  "devDependencies": {
-    "serverless-offline": "^3.27.0"
   }
 }

@@ -1,8 +1,7 @@
-service: serverless-rest-api-with-dynamodb
-
-frameworkVersion: ">=1.1.0 <2.0.0"
+service: blockster-api
 
 plugins:
+  - serverless-webpack
   - serverless-offline
   - serverless-dynamodb-local
   
@@ -10,7 +9,8 @@ provider:
   name: aws
   runtime: nodejs6.10
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    PARK_DYNAMODB_TABLE: "Park"
+    USER_DYNAMODB_TABLE: "User"
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -20,11 +20,27 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PARK_DYNAMODB_TABLE}"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_DYNAMODB_TABLE}"
 
 functions:
+  create:
+    handler: src/test/addPark.create
+    events:
+      - http:
+          path: blockster/user
+          method: post
+          cors: true
   addDependencies:
-    handler: src/park/addDependecies.addDependencies
+    handler: src/park/addDependencies.addDependencies
     events:
       - http:
           path: park/addDependencies
@@ -32,7 +48,7 @@ functions:
           cors: true
 
   getDependencies:
-    handler: src/park/getDependencies.getDependencies
+    handler: src/park/getDependents.getDependencies
     events:
       - http:
           path: park/getDependencies/{userId}
@@ -57,19 +73,31 @@ functions:
 
 resources:
   Resources:
-    TodosDynamoDbTable:
+    parkTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: id
-            AttributeType: S
         KeySchema:
-          -
-            AttributeName: id
+          - AttributeName: ParkId
             KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: ParkId
+            AttributeType: S
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        TableName: ${self:provider.environment.PARK_DYNAMODB_TABLE}
+    userTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        KeySchema:
+          - AttributeName: UserId
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: UserId
+            AttributeType: S  
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.USER_DYNAMODB_TABLE}
