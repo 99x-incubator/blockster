@@ -40,7 +40,7 @@ functions:
           method: post
           cors: true
   addDependencies:
-    handler: src/park/addDependecies.addDependencies
+    handler: src/park/addDependencies.addDependencies
     events:
       - http:
           path: park/addDependencies
@@ -48,7 +48,7 @@ functions:
           cors: true
 
   getDependencies:
-    handler: src/park/getDependencies.getDependencies
+    handler: src/park/getDependents.getDependencies
     events:
       - http:
           path: park/getDependencies/{userId}
