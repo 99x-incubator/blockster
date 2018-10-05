@@ -4,7 +4,8 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 
 plugins:
   - serverless-offline
-
+  - serverless-dynamodb-local
+  
 provider:
   name: aws
   runtime: nodejs6.10
@@ -22,43 +23,35 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
 functions:
-  create:
-    handler: todos/create.create
+  addDependencies:
+    handler: src/park/addDependecies.addDependencies
     events:
       - http:
-          path: todos
+          path: park/addDependencies
           method: post
           cors: true
 
-  list:
-    handler: todos/list.list
+  getDependencies:
+    handler: src/park/getDependencies.getDependencies
     events:
       - http:
-          path: todos
+          path: park/getDependencies/{userId}
           method: get
           cors: true
 
-  get:
-    handler: todos/get.get
+  releaseDependencies:
+    handler: src/park/releaseDependencies.releaseDependencies
     events:
       - http:
-          path: todos/{id}
-          method: get
+          path: park/releaseDependencies/{userId}
+          method: delete
           cors: true
 
-  update:
-    handler: todos/update.update
+  removeDependencies:
+    handler: src/park/removeDependencies.releaseDependencies
     events:
       - http:
-          path: todos/{id}
-          method: put
-          cors: true
-
-  delete:
-    handler: todos/delete.delete
-    events:
-      - http:
-          path: todos/{id}
+          path: park/releaseDependencies
           method: delete
           cors: true
 
