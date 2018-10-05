@@ -1,0 +1,21 @@
+<h3>
+  You are blocking these cars:
+</h3>
+
+<div *ngIf="blockees">
+  <app-car-list [cars]="blockees"></app-car-list>
+</div>
+
+<div>
+  <form (ngSubmit)="onSubmit()" #blockeeForm="ngForm">
+    <label>
+      Let's block someone:
+      <select [(ngModel)]="selected" name="selected" required>
+        <option *ngFor="let car of cars" [value]="car">{{car && car.license}}</option>
+      </select>
+    </label>
+    <button type=" submit" [disabled]="!blockeeForm.form.valid">Block</button>
+  </form>
+</div>
+
+{{selected.license}}
