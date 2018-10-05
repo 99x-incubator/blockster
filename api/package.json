@@ -20,6 +20,7 @@
     "webpack": "^4.20.2"
   },
   "dependencies": {
+    "serverless-dynamodb-local": "^0.2.35",
     "uuid": "^2.0.3"
   }
 }

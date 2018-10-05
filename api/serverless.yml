@@ -39,6 +39,38 @@ functions:
           path: blockster/user
           method: post
           cors: true
+  addDependencies:
+    handler: src/park/addDependecies.addDependencies
+    events:
+      - http:
+          path: park/addDependencies
+          method: post
+          cors: true
+
+  getDependencies:
+    handler: src/park/getDependencies.getDependencies
+    events:
+      - http:
+          path: park/getDependencies/{userId}
+          method: get
+          cors: true
+
+  releaseDependencies:
+    handler: src/park/releaseDependencies.releaseDependencies
+    events:
+      - http:
+          path: park/releaseDependencies/{userId}
+          method: delete
+          cors: true
+
+  removeDependencies:
+    handler: src/park/removeDependencies.releaseDependencies
+    events:
+      - http:
+          path: park/releaseDependencies
+          method: delete
+          cors: true
+
 resources:
   Resources:
     parkTable:
